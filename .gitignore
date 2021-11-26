@@ -1,0 +1,6 @@
+*.o
+project*
+/~
+*.vscode
+/Video
+/Submission
