@@ -62,15 +62,13 @@ GLuint	CircleList;					// object display list
 GLuint	PlaneList;					// object display list
 int Angle = 0;				      // Angle of rotation (0-360)
 bool	Frozen;								// Toggle Animation
-bool Light0On, Light1On, Light2On, Light3On;    // Light switches
+bool Light0On, Light1On;    // Light switches
 float Time;
 bool Smooth_Shading = true;
 
 // LIGHT COLORS
 Rgba LC0 = SetColorWithAlpha( LIGHTRED );
-Rgba LC1 = SetColorWithAlpha( BLUEGRAY);
-Rgba LC2 = SetColorWithAlpha( ORANGE );
-Rgba LC3 = SetColorWithAlpha( WHITE );
+Rgba LC1 = SetColorWithAlpha( ORANGE);
 
 // OBJ CONSTANT VARIABLES
 GLuint Banana;
@@ -262,7 +260,7 @@ Display( )
 
 
 	// Set VIEW: eye position, look-at position, and up-vector:
-  float lookMul = 1.f;
+  float lookMul = 2.f;
 	gluLookAt( 0.11 * lookMul, 0.25 * lookMul, 0.25 * lookMul,     0., 0.15, 0.,     0., 1., 0. );
 
 	// ROTATE the scene:
@@ -305,41 +303,19 @@ Display( )
   glPushMatrix();
     glRotatef(Angle, 0., 1., 0.);
     glRotatef(Angle, 0.05, 1., 0.08);
-    glTranslatef( 0.12, 0.1, 0.);
+    glTranslatef( 0.3, 0.1, 0.);
     SetPointLight( GL_LIGHT0, 0., 0., 0., LC0.r, LC0.g, LC0.b );
     // Create Light Geometry
     glColor3f( LC0.r, LC0.g, LC0.b );
     glutSolidSphere( 0.02, 50, 50);
   glPopMatrix();
 
-  // // LIGHT 1
-  // glPushMatrix();
-  //   glRotatef(Angle, 0., 1., 0.);
-  //   glRotatef(Time * 360, 0.05, 1., 0.02);
-  //   glTranslatef( 0.15, 0.2, -0.2);
-  //   SetPointLight( GL_LIGHT1, 0., 0., 0., LC1.r, LC1.g, LC1.b );
-  //   // Create Light Geometry
-  //   glColor3f( LC1.r, LC1.g, LC1.b );
-  //   glutSolidSphere( 0.02, 50, 50);
-  // glPopMatrix();
-  //
-  // // LIGHT 2 - SPOTLIGHT
-  // glPushMatrix();
-  //   glTranslatef( 0., 0.79, 0.);
-  //   SetSpotLight(GL_LIGHT2, 0., 0., 0., 0., -1., 0., LC2.r, LC2.g, LC2.b );
-  //   // Create Light Geometry
-  //   glColor3f( LC2.r, LC2.g, LC2.b );
-  //   glutSolidSphere( 0.03, 50, 50);
-  // glPopMatrix();
-  //
-  // // LIGHT 3 - STATIONARY WHITE POINT
-  // glPushMatrix();
-  //   glTranslatef( 0.15, 0.01, -0.1);
-  //   SetPointLight( GL_LIGHT3, 0., 0., 0., LC3.r, LC3.g, LC3.b );
-  //   // Create Light Geometry
-  //   glColor3f( LC3.r, LC3.g, LC3.b );
-  //   glutSolidSphere( 0.02, 50, 50);
-  // glPopMatrix();
+  // LIGHT 1
+  glPushMatrix();
+    SetPointLight( GL_LIGHT1, 0., 0., 0., LC1.r, LC1.g, LC1.b );
+    // Create Light Geometry
+    glColor3f( LC1.r, LC1.g, LC1.b );
+  glPopMatrix();
 
 
   // SHADING TOGGLE
@@ -357,102 +333,47 @@ Display( )
     glEnable( GL_LIGHT0 );
   else
     glDisable( GL_LIGHT0 );
-  // if( Light1On )
-  //   glEnable( GL_LIGHT1 );
-  // else
-  //   glDisable( GL_LIGHT1 );
-  // if( Light2On )
-  //   glEnable( GL_LIGHT2 );
-  // else
-  //   glDisable( GL_LIGHT2 );
-  // if( Light3On )
-  //   glEnable( GL_LIGHT3 );
-  // else
-  //   glDisable( GL_LIGHT3 );
+  if( Light1On )
+    glEnable( GL_LIGHT1 );
+  else
+    glDisable( GL_LIGHT1 );
 
 
 	// DRAW
-  float kitchen_scale = 1.f;
 
-  // Banana
+  // SUN
   glPushMatrix();
-    glTranslatef( -0.2, 0.2, 0. );
-    glRotatef( 360. * Time, 0., 1., 0. );
-    float bScale = kitchen_scale;
-    glScalef( bScale, bScale, bScale );
-    SetMaterial( 1.0, 1.0, 1.0, 15.0 );
+    SetMaterial( 1., 1., 1., 2.0 );
     glEnable( GL_TEXTURE_2D );
-    glBindTexture( GL_TEXTURE_2D, Tex1 );     // Set current texture
+    glBindTexture( GL_TEXTURE_2D, Tex0 );     // Set current texture
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
-    glCallList( Banana );
+    OsuSphere(0.10, 100, 100);
     glDisable( GL_TEXTURE_2D );
   glPopMatrix();
 
+  // EARTH
+  glPushMatrix();
+    glTranslatef( -0.3, 0., 0.1 );
+    SetMaterial( 1., 1., 1., 2.0 );
+    glEnable( GL_TEXTURE_2D );
+    glBindTexture( GL_TEXTURE_2D, Tex1 );     // Set current texture
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
+    OsuSphere(0.07, 100, 100);
+    glDisable( GL_TEXTURE_2D );
+  glPopMatrix();
 
-  // // Sphere - Shiny
-  // glPushMatrix();
-  //   glTranslatef( -0.1, 0.1, 0. );
-  //   SetMaterial( 0.8, 0.2, 0.1, 20.0 );
-  //   // glEnable( GL_TEXTURE_2D );
-  //   // glBindTexture( GL_TEXTURE_2D, Tex0 );     // Set current texture
-  //   // glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
-  //   OsuSphere(0.02, 100, 100);
-  //   // glDisable( GL_TEXTURE_2D );
-  // glPopMatrix();
-  //
-  // // Sphere - Flat
-  // glPushMatrix();
-  //   glTranslatef( -0.14, 0.08, 0.01 );
-  //   SetMaterial( 0.8, 0.2, 0.1, 1.0 );
-  //   // glEnable( GL_TEXTURE_2D );
-  //   // glBindTexture( GL_TEXTURE_2D, Tex0 );     // Set current texture
-  //   // glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
-  //   OsuSphere(0.02, 100, 100);
-  //   // glDisable( GL_TEXTURE_2D );
-  // glPopMatrix();
-
-  // // Banana - FLAT
-  // glPushMatrix();
-  //   glShadeModel( GL_FLAT );
-  //   glTranslatef( -0.1, 0.21, -0.1 );
-  //   glRotatef( 360. * Time, 0., 1., 0. );
-  //   glScalef( bScale, bScale, bScale );
-  //   SetMaterial( 1.0, 1.0, 1.0, 15.0 );
-  //   glEnable( GL_TEXTURE_2D );
-  //   glBindTexture( GL_TEXTURE_2D, Tex1 );     // Set current texture
-  //   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
-  //   glCallList( Banana );
-  //   glDisable( GL_TEXTURE_2D );
-  //
-  //   // Toggle back to selected shading type
-  //   if( Smooth_Shading ) {
-  //     glShadeModel( GL_SMOOTH );
-  //   } else {
-  //     glShadeModel( GL_FLAT );
-  //   }
-  // glPopMatrix();
+  // MOON
+  glPushMatrix();
+  glTranslatef( -0.45, 0.02, 0.2 );
+    SetMaterial( 1., 1., 1., 2.0 );
+    glEnable( GL_TEXTURE_2D );
+    glBindTexture( GL_TEXTURE_2D, Tex2 );     // Set current texture
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
+    OsuSphere(0.05, 100, 100);
+    glDisable( GL_TEXTURE_2D );
+  glPopMatrix();
 
   glDisable( GL_LIGHTING );
-
-	// draw some gratuitous text that is fixed on the screen:
-	//
-	// the projection matrix is reset to define a scene whose
-	// world coordinate system goes from 0-100 in each axis
-	//
-	// this is called "percent units", and is just a convenience
-	//
-	// the modelview matrix is reset to identity as we don't
-	// want to transform these coordinates
-
-  // TEXT - Project name
-  glDisable( GL_DEPTH_TEST );
-  glMatrixMode( GL_PROJECTION );
-  glLoadIdentity( );
-  gluOrtho2D( 0., 100.,     0., 100. );
-  glMatrixMode( GL_MODELVIEW );
-  glLoadIdentity( );
-  glColor3f( Colors[BLUEGRAY][0], Colors[BLUEGRAY][1], Colors[BLUEGRAY][2] );
-  DoRasterString( 5., 5., 0., (char *)"Project Final - Sun Earth Moon Model" );
 
 
 	// SWAP the double-buffered FRAMEBUFFERS:
@@ -764,7 +685,7 @@ InitGraphics( )
   // Setup Handles
   glGenTextures( 1, &Tex0 );                    // Create unique Texture "handle"
   glGenTextures( 1, &Tex1 );                    // Create unique Texture "handle"
-  // glGenTextures( 1, &Tex2 );                    // Create unique Texture "handle"
+  glGenTextures( 1, &Tex2 );                    // Create unique Texture "handle"
   // glGenTextures( 1, &Tex3 );                    // Create unique Texture "handle"
   // glGenTextures( 1, &Tex4 );                    // Create unique Texture "handle"
   // glGenTextures( 1, &Tex5 );                    // Create unique Texture "handle"
@@ -773,9 +694,10 @@ InitGraphics( )
 
 
   // Import *.bmp maps
-  Texture0 = BmpToTexture("data/textures/worldtex.bmp", &tex0Width, &tex0Height);  // Load texture
-  Texture1 = BmpToTexture("data/textures/Bake_Banana_Tex_Base_ALB-OP.bmp", &tex1Width, &tex1Height);
-  // Texture2 = BmpToTexture("data/textures/Bake_Banana_Tex_Base_ALB-OP.bmp", &tex2Width, &tex2Height);
+  Texture0 = BmpToTexture("data/textures/sun-color-2k.bmp", &tex0Width, &tex0Height);  // Load
+  // texture
+  Texture1 = BmpToTexture("data/textures/earth-topo-1k.bmp", &tex1Width, &tex1Height);
+  Texture2 = BmpToTexture("data/textures/moon-nasa-color-1k.bmp", &tex2Width, &tex2Height);
   // Texture3 = BmpToTexture("data/textures/Bake_Banana_Tex_Base_ALB-OP.bmp", &tex3Width, &tex3Height);
   // Texture4 = BmpToTexture("data/textures/Bake_Banana_Tex_Base_ALB-OP.bmp", &tex4Width,
   //                         &tex4Height);
@@ -805,13 +727,13 @@ InitGraphics( )
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexImage2D( GL_TEXTURE_2D, 0, 3, tex1Width, tex1Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Texture1 );
 
-  // // Tex2
-  // glBindTexture( GL_TEXTURE_2D, Tex2 );            // Make Tex2 handle current
-  // glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-  // glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-  // glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-  // glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  // glTexImage2D( GL_TEXTURE_2D, 0, 3, tex2Width, tex2Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Texture2 );
+  // Tex2
+  glBindTexture( GL_TEXTURE_2D, Tex2 );            // Make Tex2 handle current
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexImage2D( GL_TEXTURE_2D, 0, 3, tex2Width, tex2Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Texture2 );
   //
   // // Tex3
   // glBindTexture( GL_TEXTURE_2D, Tex3 );            // Make Tex3 handle current
@@ -918,14 +840,6 @@ Keyboard( unsigned char c, int x, int y )
 
     case '1':
       Light1On = !Light1On;
-      break;
-
-    case '2':
-      Light2On = !Light2On;
-      break;
-
-    case '3':
-      Light3On = !Light3On;
       break;
 
     case 'f':
@@ -1070,7 +984,7 @@ Reset( )
 	WhichProjection = PERSP;
   // WhichView = OUTSIDE;  // TODO - Custom Views
 	Xrot = Yrot = 0.;
-  Light0On = Light1On = Light2On = Light3On = true;  // Reset Lights
+  Light0On = Light1On = true;  // Reset Lights
 }
 
 
