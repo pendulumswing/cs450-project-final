@@ -353,25 +353,46 @@ Display( )
 
   // EARTH
   glPushMatrix();
+
+
+
+    // Move Earth
+    glRotatef(Angle, 0, 1., 0.);
     glTranslatef( -0.3, 0., 0.1 );
+
+    // Make earth
     SetMaterial( 1., 1., 1., 2.0 );
     glEnable( GL_TEXTURE_2D );
     glBindTexture( GL_TEXTURE_2D, Tex1 );     // Set current texture
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
     OsuSphere(0.07, 100, 100);
     glDisable( GL_TEXTURE_2D );
-  glPopMatrix();
 
-  // MOON
-  glPushMatrix();
-  glTranslatef( -0.45, 0.02, 0.2 );
+    // Move Moon
+    glRotatef(10. * Angle, 0, 1., 0.);
+    glTranslatef( -0.1, 0.05, 0. );
+
+    // Make Moon
     SetMaterial( 1., 1., 1., 2.0 );
     glEnable( GL_TEXTURE_2D );
     glBindTexture( GL_TEXTURE_2D, Tex2 );     // Set current texture
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
     OsuSphere(0.05, 100, 100);
     glDisable( GL_TEXTURE_2D );
+
   glPopMatrix();
+
+  // MOON
+  // glPushMatrix();
+  //   glTranslatef( -0.45, 0.02, 0.2 );
+  //
+  //   SetMaterial( 1., 1., 1., 2.0 );
+  //   glEnable( GL_TEXTURE_2D );
+  //   glBindTexture( GL_TEXTURE_2D, Tex2 );     // Set current texture
+  //   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
+  //   OsuSphere(0.05, 100, 100);
+  //   glDisable( GL_TEXTURE_2D );
+  // glPopMatrix();
 
   glDisable( GL_LIGHTING );
 
