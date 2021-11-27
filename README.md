@@ -66,7 +66,7 @@ real-world data while maintaining key proportions. There will be at least three 
 &emsp; **Inclination (relative to ecliptic plane):** 0.00005º  
 &emsp; **Axial tilt (relative to ecliptic plane):** 23.44º  
 &emsp; **axial rotation:** counter-clockwise  
-&emsp; **orbital mean diameter:** 149.60 million km (92.96 million miles)  
+&emsp; **orbital mean radius:** 149.60 million km (92.96 million miles)  
 &emsp; **orbital circumference:** 940 million km (584 million miles)  
 &emsp; **orbital period:** 365.256 days  
 &emsp; **orbital speed:** 29.78 km/s (107,208 km/h; 66,616 mph)  
@@ -81,7 +81,7 @@ real-world data while maintaining key proportions. There will be at least three 
 &emsp; **Inclination (relative to ecliptic plane):** 5.14º  
 &emsp; **Axial tilt (relative to lunar orbit plane):** 1.54º  
 &emsp; **axial rotation:** counter-clockwise  
-&emsp; **orbital mean diameter:** 385,000 km (239,000 miles) from Earth's center  
+&emsp; **orbital mean radius:** 385,000 km (239,000 miles) from Earth's center  
 &emsp; **orbital circumference:** 940 million km (584 million miles)  
 &emsp; **orbital period:** 27.32 days (relative to stars)  
 &emsp; **orbital speed:** 1.022 km/s (0.635 miles/s)  
