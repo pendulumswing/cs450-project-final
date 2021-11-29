@@ -43,7 +43,7 @@
 //////////////////////////////////////////////////
 
 // window background color (rgba):
-const GLfloat BACKCOLOR[ ] = { Colors[OFFWHITE][0], Colors[OFFWHITE][1], Colors[OFFWHITE][2], 1. };
+const GLfloat BACKCOLOR[ ] = { Colors[BLACK][0], Colors[BLACK][1], Colors[BLACK][2], 1. };
 
 
 //////////////////////////////////////////////////
