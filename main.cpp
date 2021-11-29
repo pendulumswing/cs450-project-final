@@ -55,6 +55,26 @@ const GLfloat BACKCOLOR[ ] = { Colors[BLACK][0], Colors[BLACK][1], Colors[BLACK]
 const int MAXIMUM_TIME_SECONDS = 10*60;     // 10 minutes
 const int MAXIMUM_TIME_MILLISECONDS = 1000* MAXIMUM_TIME_SECONDS;
 
+const float EARTH_RADIUS_MILES = 3964.19;
+const float EARTH_ORBITAL_RADIUS_MILES = 92900000.;
+
+const float EARTH_ORBIT_TIME_DAYS = 365.3;
+const float EARTH_ORBIT_TIME_HOURS = EARTH_ORBIT_TIME_DAYS * 24.;
+const float EARTH_ORBIT_TIME_SECONDS = EARTH_ORBIT_TIME_HOURS * 60. * 60.;
+const float EARTH_SPIN_TIME_DAYS = 0.9971;
+const float EARTH_SPIN_TIME_HOURS = EARTH_SPIN_TIME_DAYS * 24.;
+const float EARTH_SPIN_TIME_SECONDS = EARTH_SPIN_TIME_HOURS * 60. * 60.;
+
+const float MOON_RADIUS_MILES = 1079.6;
+const float MOON_ORBITAL_RADIUS_MILES = 238900.;
+
+const float MOON_ORBIT_TIME_DAYS = 27.3;
+const float MOON_ORBIT_TIME_HOURS = MOON_ORBIT_TIME_DAYS * 24.;
+const float MOON_ORBIT_TIME_SECONDS = MOON_ORBIT_TIME_HOURS * 60. * 60.;
+const float MOON_SPIN_TIME_DAYS = MOON_ORBIT_TIME_DAYS;
+const float MOON_SPIN_TIME_HOURS = MOON_SPIN_TIME_DAYS * 24.;
+const float MOON_SPIN_TIME_SECONDS = MOON_SPIN_TIME_HOURS * 60. * 60.;
+
 //////////////////////////////////////////////////
 // COLORS - Imported from colors.h
 //////////////////////////////////////////////////
