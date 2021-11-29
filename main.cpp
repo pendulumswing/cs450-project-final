@@ -42,9 +42,18 @@
 // CONSTANTS - Imported from constants.h
 //////////////////////////////////////////////////
 
+enum views
+{
+    OUTSIDEVIEW, EARTHVIEW, MOONVIEW, TUCSONVIEW
+};
+
+enum views WhichView;
+
 // window background color (rgba):
 const GLfloat BACKCOLOR[ ] = { Colors[BLACK][0], Colors[BLACK][1], Colors[BLACK][2], 1. };
 
+const int MAXIMUM_TIME_SECONDS = 10*60;     // 10 minutes
+const int MAXIMUM_TIME_MILLISECONDS = 1000* MAXIMUM_TIME_SECONDS;
 
 //////////////////////////////////////////////////
 // COLORS - Imported from colors.h
@@ -204,8 +213,11 @@ Animate( )
   Angle = Angle < 360 ? Angle + 1 : 0;
 
   int ms = glutGet( GLUT_ELAPSED_TIME );
-  ms %= MS_PER_CYCLE;
-  Time = (float)ms / (float)MS_PER_CYCLE;  // Normalize to value: 0.0 <= x <= 1.0
+  // ms %= MS_PER_CYCLE;
+  // Time = (float)ms / (float)MS_PER_CYCLE;  // Normalize to value: 0.0 <= x <= 1.0
+
+  ms %= MAXIMUM_TIME_MILLISECONDS;
+  Time = (float)ms / 1000.f;  // convert to seconds (total time, not 0 to 1)
 
 	glutSetWindow( MainWindow );
 	glutPostRedisplay( );
