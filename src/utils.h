@@ -5,11 +5,14 @@
 
 #include <vector>
 
+#define GLM_FORCE_RADIANS
 #include "../glm/vec2.hpp"
 #include "../glm/vec3.hpp"
 #include "../glm/mat4x4.hpp"
 #include "../glm/gtc/matrix_transform.hpp"
 #include "../glm/gtc/matrix_inverse.hpp"
+#include "../glm/glm.hpp"
+#include "../glm/gtc/type_ptr.hpp"
 #include "constants.h"
 
 // read a BMP file into a Texture:
