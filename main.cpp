@@ -44,7 +44,7 @@
 
 enum views
 {
-    OUTSIDEVIEW, EARTHVIEW, MOONVIEW, TUCSONVIEW
+    OUTSIDEVIEW, EARTHVIEW, MOONVIEW, SUNVIEW
 };
 
 enum views WhichView;
@@ -52,28 +52,35 @@ enum views WhichView;
 // window background color (rgba):
 const GLfloat BACKCOLOR[ ] = { Colors[BLACK][0], Colors[BLACK][1], Colors[BLACK][2], 1. };
 
-const int MAXIMUM_TIME_SECONDS = 10*60;     // 10 minutes
-const int MAXIMUM_TIME_MILLISECONDS = 1000* MAXIMUM_TIME_SECONDS;
+const int MAXIMUM_TIME_SECONDS = 10 * 60;     // 10 minutes
+const int MAXIMUM_TIME_MILLISECONDS = 1000 * MAXIMUM_TIME_SECONDS;
 
-const float EARTH_RADIUS_MILES = 3964.19;
-const float EARTH_ORBITAL_RADIUS_MILES = 92900000.;
+const float UNIVERSE_ORBIT_RADIUS_FACTOR = 0.00000004;
+const float UNIVERSE_SPEED_FACTOR = 0.000000004;
+const float UNIVERSE_SIZE_FACTOR = 0.00004;
 
-const float EARTH_ORBIT_TIME_DAYS = 365.3;
+const float EARTH_RADIUS_MILES = 3964.19 * UNIVERSE_SIZE_FACTOR;
+const float EARTH_ORBITAL_RADIUS_MILES = 92900000. * UNIVERSE_ORBIT_RADIUS_FACTOR;
+
+const float EARTH_ORBIT_TIME_DAYS = 365.3 * UNIVERSE_SPEED_FACTOR;
 const float EARTH_ORBIT_TIME_HOURS = EARTH_ORBIT_TIME_DAYS * 24.;
 const float EARTH_ORBIT_TIME_SECONDS = EARTH_ORBIT_TIME_HOURS * 60. * 60.;
-const float EARTH_SPIN_TIME_DAYS = 0.9971;
+const float EARTH_SPIN_TIME_DAYS = 0.9971 * UNIVERSE_SPEED_FACTOR;
 const float EARTH_SPIN_TIME_HOURS = EARTH_SPIN_TIME_DAYS * 24.;
 const float EARTH_SPIN_TIME_SECONDS = EARTH_SPIN_TIME_HOURS * 60. * 60.;
 
-const float MOON_RADIUS_MILES = 1079.6;
-const float MOON_ORBITAL_RADIUS_MILES = 238900.;
+const float MOON_RADIUS_MILES = 1079.6 * UNIVERSE_SIZE_FACTOR;
+const float MOON_ORBITAL_RADIUS_MILES = 238900. * UNIVERSE_ORBIT_RADIUS_FACTOR;
 
-const float MOON_ORBIT_TIME_DAYS = 27.3;
+const float MOON_ORBIT_TIME_DAYS = 27.3 * UNIVERSE_SPEED_FACTOR;
 const float MOON_ORBIT_TIME_HOURS = MOON_ORBIT_TIME_DAYS * 24.;
 const float MOON_ORBIT_TIME_SECONDS = MOON_ORBIT_TIME_HOURS * 60. * 60.;
 const float MOON_SPIN_TIME_DAYS = MOON_ORBIT_TIME_DAYS;
 const float MOON_SPIN_TIME_HOURS = MOON_SPIN_TIME_DAYS * 24.;
 const float MOON_SPIN_TIME_SECONDS = MOON_SPIN_TIME_HOURS * 60. * 60.;
+
+
+const float ONE_FULL_TURN = 1.;
 
 //////////////////////////////////////////////////
 // COLORS - Imported from colors.h
@@ -101,14 +108,9 @@ Rgba LC1 = SetColorWithAlpha( ORANGE);
 
 // OBJ CONSTANT VARIABLES
 GLuint Banana;
-GLuint Box;
-GLuint Oatmeal;
-GLuint Kitchen_Walls;
-GLuint Kitchen_Props;
-GLuint Kitchen_Floor;
-GLuint Wisk;
-GLuint Spoon;
-GLuint Vanilla;
+GLuint SunList;
+GLuint EarthList;
+GLuint MoonList;
 
 // TEXTURE GLOBAL VARIABLES
 GLuint Tex0;                // To store texture
@@ -180,6 +182,43 @@ void	MouseMotion( int, int );
 void	Reset( );
 void	Resize( int, int );
 void	Visibility( int );
+
+
+
+
+glm::mat4 MakeEarthMatrix( )
+{
+  float earthSpinAngle = Time * EARTH_SPIN_TIME_SECONDS * ONE_FULL_TURN;
+  float earthOrbitAngle = Time * EARTH_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
+  glm::mat4 identity = glm::mat4( 1. );
+  glm::vec3 yaxis = glm::vec3( 0., 1., 0. );
+
+  /* 3. */ glm::mat4 erorbity = glm::rotate( identity, earthOrbitAngle, yaxis );
+  /* 2. */ glm::mat4 etransx = glm::translate( identity, glm::vec3( EARTH_ORBITAL_RADIUS_MILES, 0., 0. ) );
+  /* 1. */ glm::mat4 erspiny = glm::rotate( identity, earthSpinAngle, yaxis );
+
+  return erorbity * etransx * erspiny; // 3 * 2 * 1
+}
+
+
+glm::mat4 MakeMoonMatrix( )
+{
+  float moonSpinAngle = Time * MOON_SPIN_TIME_SECONDS * ONE_FULL_TURN;
+  float moonOrbitAngle = Time * MOON_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
+  float earthOrbitAngle = Time * EARTH_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
+  glm::mat4 identity = glm::mat4( 1. );
+  glm::vec3 yaxis = glm::vec3( 0., 1., 0. );
+
+  /* 5. */ glm::mat4 erorbity = glm::rotate( identity, earthOrbitAngle, yaxis );
+  /* 4. */ glm::mat4 etransx = glm::translate( identity, glm::vec3( EARTH_ORBITAL_RADIUS_MILES, 0., 0. ) );
+  /* 3. */ glm::mat4 mrorbity = glm::rotate( identity, moonOrbitAngle, yaxis );
+  /* 2. */ glm::mat4 mtransx = glm::translate( identity, glm::vec3( MOON_ORBITAL_RADIUS_MILES, 0., 0. ) );
+  /* 1. */ glm::mat4 mrspiny = glm::rotate( identity, moonSpinAngle, yaxis );
+
+  return erorbity * etransx * mrorbity * mtransx * mrspiny; // 5 * 4 * 3 * 2 * 1
+}
+
+
 
 
 // main program:
@@ -275,6 +314,8 @@ Display( )
 	GLint yb = ( vy - v ) / 2;
 	glViewport( xl, yb,  v, v );
 
+
+
 	// set the VIEWING VOLUME:
 	// remember that the Z clipping values are actually
 	// given as DISTANCES IN FRONT OF THE EYE
@@ -286,14 +327,107 @@ Display( )
 	else
 		gluPerspective( 90., 1.,	0.1, 1000. );
 
+
+  // gluLookAt Components
+  glm::mat4 m;
+  glm::vec4 eye = glm::vec4( 0., 0., 0., 1. );
+  glm::vec4 look = glm::vec4( 0., 0., 0., 1. );
+  glm::vec4 up = glm::vec4( 0., 0., 0., 0. ); // vectors don’t get translations
+
 	// PLACE OBJECTS into the scene:
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity( );
 
 
+  // This switch statement is going to switch
+  // between four different ways of setting
+  // gluLookAt( ), the first for our usual
+  switch( WhichView )  // look-at and the rest for planetary views
+  {
+    case OUTSIDEVIEW:   // 1st way to set gluLookAt( )
+      gluLookAt( 0., 0., 3., 0., 0., 0., 0., 1., 0. );
+      glRotatef( (GLfloat)Yrot, 0., 1., 0. );
+      glRotatef( (GLfloat)Xrot, 1., 0., 0. );
+      if( Scale < MINSCALE )
+        Scale = MINSCALE;
+      glScalef( Scale, Scale, Scale );
+      break;
+
+    case EARTHVIEW:     // 2nd way to set gluLookAt( )
+      m = MakeEarthMatrix( );
+
+      // float eye[4] = { EARTH_RADIUS_MILES, 0., 0., 1. };
+      eye.x = EARTH_RADIUS_MILES;
+      eye = m * eye;
+
+      // float look[4] = { EARTH_RADIUS_MILES, 0., -1000., 1. };
+      look.x = EARTH_RADIUS_MILES;
+      look.z = -1000.;
+      look = m * look;
+
+      // float up[4] = { 1000., 0., 0., 0. };
+      up.x = 1000.;
+      up = m * up;
+
+      gluLookAt( eye.x, eye.y, eye.z, look.x, look.y, look.z,
+                 up.x, up.y, up.z );
+      break;
+
+
+    case MOONVIEW:   // 3rd way to set gluLookAt( )
+      m = MakeMoonMatrix( );
+
+      // float eye[4] = { MOON_RADIUS_MILES, 0., 0., 1. };
+      eye.x = MOON_RADIUS_MILES;
+      eye = m * eye;
+
+      // float look[4] = MOON_RADIUS_MILES, 0., -1000., 1. };
+      look.x = MOON_RADIUS_MILES;
+      look.z = -1000.;
+      look = m * look;
+
+      //float up[4] = {100 0., 0., 0., 0. };
+      up.x = 1000.;
+      up = m * up;
+
+      gluLookAt( eye.x, eye.y, eye.z, look.x, look.y, look.z,
+                 up.x, up.y, up.z );
+      break;
+
+    case SUNVIEW:    // 4th way to set gluLookAt( )
+      {
+        // Latitude and Longitude
+        float y = EARTH_RADIUS_MILES * sinf( 44.57);
+        float xz = cosf( 44.57 );
+        float x = EARTH_RADIUS_MILES * xz * cosf( 123.27 );
+        float z = EARTH_RADIUS_MILES * xz * sinf( 123.27 );
+
+        m = MakeEarthMatrix( );
+
+        // float eye[4] = { x, y, z, 1. };
+        eye.x = x; eye.y = y; eye.z = z;
+        eye = m * eye;
+
+        // float look[4] = { x+z, y, z-x, 1. };
+        look.x = x+z; look.y = y; look.z = z-x;
+        look = m * look;
+
+        // float up[4] = { x, y, z, 0. };
+        up.x = x; up.y = y; up.z = z;
+        up = m * up;
+
+        gluLookAt( eye.x, eye.y, eye.z, look.x, look.y, look.z,
+                   up.x, up.y, up.z );
+      }
+      break;
+
+    default:
+      float lookMul = 2.f;
+      gluLookAt( 0.11 * lookMul, 0.25 * lookMul, 0.25 * lookMul,     0., 0.15, 0.,     0., 1., 0. );
+  }
 	// Set VIEW: eye position, look-at position, and up-vector:
-  float lookMul = 2.f;
-	gluLookAt( 0.11 * lookMul, 0.25 * lookMul, 0.25 * lookMul,     0., 0.15, 0.,     0., 1., 0. );
+  // float lookMul = 2.f;
+	// gluLookAt( 0.11 * lookMul, 0.25 * lookMul, 0.25 * lookMul,     0., 0.15, 0.,     0., 1., 0. );
 
 	// ROTATE the scene:
 	glRotatef( (GLfloat)Yrot, 0., 1., 0. );
@@ -372,6 +506,10 @@ Display( )
 
 
 	// DRAW
+  glm::mat4 earth = MakeEarthMatrix( );
+  glm::mat4 moon = MakeMoonMatrix( );
+
+
 
   // SUN
   glPushMatrix();
@@ -383,10 +521,32 @@ Display( )
     glDisable( GL_TEXTURE_2D );
   glPopMatrix();
 
+
+  // Earth using matrix
+  glPushMatrix( );
+    SetMaterial( 1., 1., 1., 2.0 );
+    glEnable( GL_TEXTURE_2D );
+    glBindTexture(GL_TEXTURE_2D, Tex1 );
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+    glMultMatrixf( glm::value_ptr(earth) );
+    glCallList( EarthList );
+    glDisable( GL_TEXTURE_2D );
+  glPopMatrix( );
+
+  // Moon using matrix
+  glPushMatrix( );
+    SetMaterial( 1., 1., 1., 2.0 );
+    glEnable( GL_TEXTURE_2D );
+    glBindTexture(GL_TEXTURE_2D, Tex2 );
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+    glMultMatrixf( glm::value_ptr(moon) );
+    glCallList( MoonList );
+    glDisable( GL_TEXTURE_2D );
+  glPopMatrix( );
+
+
   // EARTH
   glPushMatrix();
-
-
 
     // Move Earth
     glRotatef(Angle, 0, 1., 0.);
@@ -397,7 +557,9 @@ Display( )
     glEnable( GL_TEXTURE_2D );
     glBindTexture( GL_TEXTURE_2D, Tex1 );     // Set current texture
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
-    OsuSphere(0.07, 100, 100);
+    glCallList(EarthList);
+    // OsuSphere(0.07, 100, 100);
+    glCallList(EarthList);
     glDisable( GL_TEXTURE_2D );
 
     // Move Moon
@@ -409,7 +571,8 @@ Display( )
     glEnable( GL_TEXTURE_2D );
     glBindTexture( GL_TEXTURE_2D, Tex2 );     // Set current texture
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
-    OsuSphere(0.05, 100, 100);
+    // OsuSphere(0.05, 100, 100);
+    glCallList(MoonList);
     glDisable( GL_TEXTURE_2D );
 
   glPopMatrix();
@@ -846,6 +1009,18 @@ InitLists( )
 {
 	glutSetWindow( MainWindow );
 
+  // EarthList
+  EarthList = glGenLists( 1 );
+  glNewList( EarthList, GL_COMPILE );
+    OsuSphere(EARTH_RADIUS_MILES, 100, 100);
+  glEndList();
+
+  // EarthList
+  MoonList = glGenLists( 1 );
+  glNewList( MoonList, GL_COMPILE );
+    OsuSphere(MOON_RADIUS_MILES, 100, 100);
+  glEndList();
+
   // BANANA
   Banana = glGenLists( 1 );
   glNewList( Banana, GL_COMPILE );
@@ -893,6 +1068,16 @@ Keyboard( unsigned char c, int x, int y )
 
     case '1':
       Light1On = !Light1On;
+      break;
+
+    // Toggle through views
+    case 'v':
+    case 'V':
+      {
+        printf("Old WhichView: %i \n", WhichView);
+        WhichView = static_cast<views>((static_cast<int>(WhichView) + 1) % 4);
+        printf("New WhichView: %i \n", WhichView);
+      }
       break;
 
     case 'f':
@@ -989,8 +1174,8 @@ MouseButton( int button, int state, int x, int y )
 void
 MouseMotion( int x, int y )
 {
-	if( true )
-		fprintf( stderr, "MouseMotion: %d, %d\n", x, y );
+	if( true ) { }
+		// fprintf( stderr, "MouseMotion: %d, %d\n", x, y );
 
 
 	int dx = x - Xmouse;		// change in mouse coords
@@ -1035,6 +1220,7 @@ Reset( )
 	ShadowsOn = 0;
 	WhichColor = WHITE;
 	WhichProjection = PERSP;
+  WhichView = OUTSIDEVIEW;
   // WhichView = OUTSIDE;  // TODO - Custom Views
 	Xrot = Yrot = 0.;
   Light0On = Light1On = true;  // Reset Lights
