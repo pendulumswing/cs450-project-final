@@ -82,7 +82,7 @@ real-world data while maintaining key proportions. There will be at least three 
 &emsp; **Axial tilt (relative to lunar orbit plane):** 1.54º  
 &emsp; **axial rotation:** counter-clockwise  
 &emsp; **orbital mean radius:** 385,000 km (239,000 miles) from Earth's center  
-&emsp; **orbital circumference:** 940 million km (584 million miles)  
+&emsp; **orbital circumference:** 2,419,026 km (1,503,113 miles)  
 &emsp; **orbital period:** 27.32 days (relative to stars)  
 &emsp; **orbital speed:** 1.022 km/s (0.635 miles/s)  
 &emsp; **orbital rotation:** counter-clockwise  
