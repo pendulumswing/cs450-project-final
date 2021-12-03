@@ -57,23 +57,25 @@ const GLfloat BACKCOLOR[ ] = { Colors[WHITE][0], Colors[WHITE][1], Colors[WHITE]
 // Animation Time
 const int MAXIMUM_TIME_SECONDS = 10 * 60;     // 10 minutes
 const int MAXIMUM_TIME_MILLISECONDS = 1000 * MAXIMUM_TIME_SECONDS;
-const double ONE_FULL_TURN = 100.;
+// const double ONE_FULL_TURN = 100.;
+const double ONE_FULL_TURN = 1000.;
 
 // Scaling Factors
 // const float UNIVERSE_ORBIT_RADIUS_FACTOR = 0.00000004;
 // const float UNIVERSE_SPEED_FACTOR = 0.000000004;
 // const float UNIVERSE_SIZE_FACTOR = 0.00004;
-const double UNIVERSE_ORBIT_RADIUS_FACTOR = 0.00000005;
+
+const double UNIVERSE_ORBIT_RADIUS_FACTOR = 0.00000005;   // For scaling orbit radii
 // const double UNIVERSE_ORBIT_RADIUS_FACTOR = 1.;
 const double MOON_ORBIT_RADIUS_FACTOR = 100.;
-// const float UNIVERSE_SPEED_FACTOR = 1.;
-const double UNIVERSE_SIZE_FACTOR = 0.00008;
-const double SUN_SCALE_FACTOR = UNIVERSE_SIZE_FACTOR * 0.03;
+const double UNIVERSE_SIZE_FACTOR = 0.00008;   // For setting size of planetary bodies (Not the sun)
+const double SUN_SCALE_FACTOR = UNIVERSE_SIZE_FACTOR * 0.03;  // Sun only
 const double AU = 149600000.;  // Astronomical Unit - Distance from Earth to sun  (When calculating
-// orbit, distance should be in AU and period should be in years
+                               // orbit, distance is in AU and period is in years.
+                               // Simple equation only for those orbiting sun.
 
 // Earth Attributes
-const double EARTH_RADIUS_MILES = 3964.19 * UNIVERSE_SIZE_FACTOR;
+// const double EARTH_RADIUS_MILES = 3964.19 * UNIVERSE_SIZE_FACTOR;
 const double EARTH_RADIUS_KM = 6371. * UNIVERSE_SIZE_FACTOR;
 
 // const double EARTH_ORBITAL_RADIUS_MILES = 92900000. * UNIVERSE_ORBIT_RADIUS_FACTOR;
@@ -86,10 +88,12 @@ const double EARTH_ORBITAL_RADIUS_KM = 149600000. * UNIVERSE_ORBIT_RADIUS_FACTOR
 const double EARTH_ORBITAL_PERIOD = pow((EARTH_ORBITAL_RADIUS_KM / AU), (3./2.));
 
 const double EARTH_ORBIT_TIME_DAYS = 365.3 * EARTH_ORBITAL_PERIOD;
+// const double EARTH_ORBIT_TIME_DAYS = 365.3;
 const double EARTH_ORBIT_TIME_HOURS = EARTH_ORBIT_TIME_DAYS * 24.;
 const double EARTH_ORBIT_TIME_SECONDS = EARTH_ORBIT_TIME_HOURS * 60. * 60.;
 
 const double EARTH_SPIN_TIME_DAYS = 0.9971 * EARTH_ORBITAL_PERIOD;
+// const double EARTH_SPIN_TIME_DAYS = 0.9971;
 const double EARTH_SPIN_TIME_HOURS = EARTH_SPIN_TIME_DAYS * 24.;
 const double EARTH_SPIN_TIME_SECONDS = EARTH_SPIN_TIME_HOURS * 60. * 60.;
 
@@ -105,6 +109,7 @@ const double MOON_ORBITAL_RADIUS_KM = 385000. * UNIVERSE_ORBIT_RADIUS_FACTOR * M
 const double MOON_ORBITAL_PERIOD =  27.3 * EARTH_ORBITAL_PERIOD;
 
 const double MOON_ORBIT_TIME_DAYS = 27.3 * EARTH_ORBITAL_PERIOD;
+// const double MOON_ORBIT_TIME_DAYS = 27.3;
 const double MOON_ORBIT_TIME_HOURS = MOON_ORBIT_TIME_DAYS * 24.;
 const double MOON_ORBIT_TIME_SECONDS = MOON_ORBIT_TIME_HOURS * 60. * 60.;
 
@@ -227,6 +232,7 @@ glm::mat4 MakeEarthMatrix( )
   printf("EARTH_ORBIT_TIME_SECONDS: %.*f\n", 12, EARTH_ORBIT_TIME_SECONDS);
   printf("EARTH_ORBITAL_PERIOD: %.*f\n", 12, EARTH_ORBITAL_PERIOD);
   float earthSpinAngle = Time * EARTH_SPIN_TIME_SECONDS * ONE_FULL_TURN * 36500;
+  // float earthSpinAngle = Time * EARTH_SPIN_TIME_SECONDS * ONE_FULL_TURN;
   float earthOrbitAngle = Time * EARTH_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
   printf("earthSpinAngle: %.*f\n", 12, earthSpinAngle);
   printf("earthOrbitAngle: %.*f\n", 12, earthOrbitAngle);
@@ -245,6 +251,7 @@ glm::mat4 MakeMoonMatrix( )
 {
   float moonSpinAngle = Time * MOON_SPIN_TIME_SECONDS * ONE_FULL_TURN;
   float moonOrbitAngle = Time * MOON_ORBIT_TIME_SECONDS * ONE_FULL_TURN * 200;
+  // float moonOrbitAngle = Time * MOON_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
   float earthOrbitAngle = Time * EARTH_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
   glm::mat4 identity = glm::mat4( 1. );
   glm::vec3 yaxis = glm::vec3( 0., 1., 0. );
@@ -399,11 +406,11 @@ Display( )
     case EARTHVIEW:     // 2nd way to set gluLookAt( )
       m = MakeEarthMatrix( );
 
-      // float eye[4] = { EARTH_RADIUS_MILES, 0., 0., 1. };
+      // float eye[4] = { EARTH_RADIUS_KM, 0., 0., 1. };
       eye.x = EARTH_RADIUS_KM;
       eye = m * eye;
 
-      // float look[4] = { EARTH_RADIUS_MILES, 0., -1000., 1. };
+      // float look[4] = { EARTH_RADIUS_KM, 0., -1000., 1. };
       look.x = EARTH_RADIUS_KM;
       look.z = -1000.;
       look = m * look;
@@ -420,11 +427,11 @@ Display( )
     case MOONVIEW:   // 3rd way to set gluLookAt( )
       m = MakeMoonMatrix( );
 
-      // float eye[4] = { MOON_RADIUS_MILES, 0., 0., 1. };
+      // float eye[4] = { MOON_RADIUS_KM, 0., 0., 1. };
       eye.x = MOON_RADIUS_KM;
       eye = m * eye;
 
-      // float look[4] = MOON_RADIUS_MILES, 0., -1000., 1. };
+      // float look[4] = MOON_RADIUS_KM, 0., -1000., 1. };
       look.x = MOON_RADIUS_KM;
       look.z = -1000.;
       look = m * look;
@@ -600,7 +607,7 @@ Display( )
   printf("MOON ORBITAL PERIOD: %.*f\n", 12, MOON_ORBITAL_PERIOD);
   printf("FRACTION OF AU: %.*f\n", 12, (MOON_ORBITAL_RADIUS_KM / EARTH_ORBITAL_RADIUS_KM));
   printf("EARTH ORBITAL PERIOD: %.*f\n", 12, EARTH_ORBITAL_PERIOD);
-  printf("EARTH ORBIT TIME: %.*f\n", 12, EARTH_ORBIT_TIME_DAYS);
+  printf("EARTH ORBIT TIME DAYS: %.*f\n", 12, EARTH_ORBIT_TIME_DAYS);
 
   // printf("EARTH ORBITAL PERIOD: %f\n", EARTH_ORBITAL_PERIOD);
 
