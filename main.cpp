@@ -51,69 +51,99 @@ enum views
 enum views WhichView;
 
 // window background color (rgba):
-// const GLfloat BACKCOLOR[ ] = { Colors[BLACK][0], Colors[BLACK][1], Colors[BLACK][2], 1. };
-const GLfloat BACKCOLOR[ ] = { Colors[WHITE][0], Colors[WHITE][1], Colors[WHITE][2], 1. };
+const GLfloat BACKCOLOR[ ] = { Colors[BLACK][0], Colors[BLACK][1], Colors[BLACK][2], 1. };
+// const GLfloat BACKCOLOR[ ] = { Colors[WHITE][0], Colors[WHITE][1], Colors[WHITE][2], 1. };
 
 // Animation Time
 const int MAXIMUM_TIME_SECONDS = 10 * 60;     // 10 minutes
 const int MAXIMUM_TIME_MILLISECONDS = 1000 * MAXIMUM_TIME_SECONDS;
 // const double ONE_FULL_TURN = 100.;
-const double ONE_FULL_TURN = 1000.;
+// double ONE_FULL_TURN = 100.;
 
 // Scaling Factors
 // const float UNIVERSE_ORBIT_RADIUS_FACTOR = 0.00000004;
 // const float UNIVERSE_SPEED_FACTOR = 0.000000004;
 // const float UNIVERSE_SIZE_FACTOR = 0.00004;
 
-const double UNIVERSE_ORBIT_RADIUS_FACTOR = 0.00000005;   // For scaling orbit radii
-// const double UNIVERSE_ORBIT_RADIUS_FACTOR = 1.;
-const double MOON_ORBIT_RADIUS_FACTOR = 100.;
-const double UNIVERSE_SIZE_FACTOR = 0.00008;   // For setting size of planetary bodies (Not the sun)
-const double SUN_SCALE_FACTOR = UNIVERSE_SIZE_FACTOR * 0.03;  // Sun only
+// const double UNIVERSE_ORBIT_RADIUS_FACTOR = 0.00000005;   // For scaling orbit radii
+const double MOON_ORBIT_RADIUS_FACTOR = 50.;  // Offset to account for size
+const double UNIVERSE_SIZE_FACTOR = 1.;   // For setting size of planetary bodies (Not the sun)
+const double SUN_SCALE_FACTOR = 0.000002;  // Sun only
 const double AU = 149600000.;  // Astronomical Unit - Distance from Earth to sun  (When calculating
                                // orbit, distance is in AU and period is in years.
                                // Simple equation only for those orbiting sun.
-
-// Earth Attributes
-// const double EARTH_RADIUS_MILES = 3964.19 * UNIVERSE_SIZE_FACTOR;
-const double EARTH_RADIUS_KM = 6371. * UNIVERSE_SIZE_FACTOR;
-
-// const double EARTH_ORBITAL_RADIUS_MILES = 92900000. * UNIVERSE_ORBIT_RADIUS_FACTOR;
-const double EARTH_ORBITAL_RADIUS_KM = 149600000. * UNIVERSE_ORBIT_RADIUS_FACTOR;
-
-// const double EARTH_MASS = 5.97 * pow(10., 24);  // 10^24 kg
 // const double G = 6.674 * pow(10., -11);  // Gravity constant
 
-// Adjust orbital period based on orbital radius per Kepler's 3rd law
-const double EARTH_ORBITAL_PERIOD = pow((EARTH_ORBITAL_RADIUS_KM / AU), (3./2.));
+// // Earth Attributes
+// // const double EARTH_MASS = 5.97 * pow(10., 24);  // 10^24 kg
+// // const double EARTH_RADIUS_MILES = 3964.19 * UNIVERSE_SIZE_FACTOR;
+// const double EARTH_RADIUS_KM = 6371. * UNIVERSE_SIZE_FACTOR;
+//
+// // const double EARTH_ORBITAL_RADIUS_MILES = 92900000. * UNIVERSE_ORBIT_RADIUS_FACTOR;
+// const double EARTH_ORBITAL_RADIUS_KM = 149600000. * UNIVERSE_ORBIT_RADIUS_FACTOR;
+//
+// // Adjust orbital period based on orbital radius per Kepler's 3rd law
+// const double EARTH_ORBITAL_PERIOD = pow((EARTH_ORBITAL_RADIUS_KM / AU), (3./2.));
+//
+// const double EARTH_ORBIT_TIME_DAYS = 365.3 * EARTH_ORBITAL_PERIOD;
+// // const double EARTH_ORBIT_TIME_DAYS = 365.3;
+// const double EARTH_ORBIT_TIME_HOURS = EARTH_ORBIT_TIME_DAYS * 24.;
+// const double EARTH_ORBIT_TIME_SECONDS = EARTH_ORBIT_TIME_HOURS * 60. * 60.;
+//
+// const double EARTH_SPIN_TIME_DAYS = 0.9971 * EARTH_ORBITAL_PERIOD;
+// // const double EARTH_SPIN_TIME_DAYS = 0.9971;
+// const double EARTH_SPIN_TIME_HOURS = EARTH_SPIN_TIME_DAYS * 24.;
+// const double EARTH_SPIN_TIME_SECONDS = EARTH_SPIN_TIME_HOURS * 60. * 60.;
 
-const double EARTH_ORBIT_TIME_DAYS = 365.3 * EARTH_ORBITAL_PERIOD;
+// const double EARTH_RADIUS_KM = 6371. * UNIVERSE_SIZE_FACTOR;
+const double EARTH_RADIUS_KM = 0.5 * UNIVERSE_SIZE_FACTOR;
+const double EARTH_ORBITAL_RADIUS_KM = 10.;
+
+const double MULTIPLIER = pow((EARTH_ORBITAL_RADIUS_KM / AU), 1.5);
+// double ONE_FULL_TURN = pow((EARTH_ORBITAL_RADIUS_KM / AU), 1.5);
+double ONE_FULL_TURN = 1.;
+// const double MULTIPLIER = EARTH_ORBITAL_RADIUS_KM / AU;
+
 // const double EARTH_ORBIT_TIME_DAYS = 365.3;
+const double EARTH_ORBIT_TIME_DAYS = 365.3 * MULTIPLIER * 100;
 const double EARTH_ORBIT_TIME_HOURS = EARTH_ORBIT_TIME_DAYS * 24.;
 const double EARTH_ORBIT_TIME_SECONDS = EARTH_ORBIT_TIME_HOURS * 60. * 60.;
 
-const double EARTH_SPIN_TIME_DAYS = 0.9971 * EARTH_ORBITAL_PERIOD;
+
+double EARTH_SPIN_TURN = 27.32 * EARTH_ORBIT_TIME_DAYS;
+const double EARTH_SPIN_TIME_DAYS = EARTH_ORBIT_TIME_DAYS * (365.3 / 0.9971);
 // const double EARTH_SPIN_TIME_DAYS = 0.9971;
 const double EARTH_SPIN_TIME_HOURS = EARTH_SPIN_TIME_DAYS * 24.;
 const double EARTH_SPIN_TIME_SECONDS = EARTH_SPIN_TIME_HOURS * 60. * 60.;
 
 
 // Moon Attributes
-// const double MOON_RADIUS_MILES = 1079.6 * UNIVERSE_SIZE_FACTOR;
-const double MOON_RADIUS_KM = 1737.4 * UNIVERSE_SIZE_FACTOR;
+// // const double MOON_RADIUS_MILES = 1079.6 * UNIVERSE_SIZE_FACTOR;
+// const double MOON_RADIUS_KM = 1737.4 * UNIVERSE_SIZE_FACTOR;
+//
+// const double MOON_ORBITAL_RADIUS_MILES = 238900. * UNIVERSE_ORBIT_RADIUS_FACTOR * MOON_ORBIT_RADIUS_FACTOR;
+// const double MOON_ORBITAL_RADIUS_KM = 385000. * UNIVERSE_ORBIT_RADIUS_FACTOR * MOON_ORBIT_RADIUS_FACTOR;
+//
+// const double MOON_ORBITAL_PERIOD =  27.3 * EARTH_ORBITAL_PERIOD;
+//
+// const double MOON_ORBIT_TIME_DAYS = 27.3 * EARTH_ORBITAL_PERIOD;
+// const double MOON_ORBIT_TIME_HOURS = MOON_ORBIT_TIME_DAYS * 24.;
+// const double MOON_ORBIT_TIME_SECONDS = MOON_ORBIT_TIME_HOURS * 60. * 60.;
+//
+// const double MOON_SPIN_TIME_DAYS = MOON_ORBIT_TIME_DAYS;
+// const double MOON_SPIN_TIME_HOURS = MOON_SPIN_TIME_DAYS * 24.;
+// const double MOON_SPIN_TIME_SECONDS = MOON_SPIN_TIME_HOURS * 60. * 60.;
 
-const double MOON_ORBITAL_RADIUS_MILES = 238900. * UNIVERSE_ORBIT_RADIUS_FACTOR * MOON_ORBIT_RADIUS_FACTOR;
-const double MOON_ORBITAL_RADIUS_KM = 385000. * UNIVERSE_ORBIT_RADIUS_FACTOR * MOON_ORBIT_RADIUS_FACTOR;
+// const double MOON_RADIUS_KM = 1737.4 * UNIVERSE_SIZE_FACTOR;
+const double MOON_RADIUS_KM = (1737.4 / 6371.) * EARTH_RADIUS_KM;
+const double MOON_ORBITAL_RADIUS_KM = (385000./149600000) * EARTH_ORBITAL_RADIUS_KM * MOON_ORBIT_RADIUS_FACTOR;
 
-// Orbital period of moon is proportional to Earth's, since the orbital radius is proportional
-const double MOON_ORBITAL_PERIOD =  27.3 * EARTH_ORBITAL_PERIOD;
-
-const double MOON_ORBIT_TIME_DAYS = 27.3 * EARTH_ORBITAL_PERIOD;
-// const double MOON_ORBIT_TIME_DAYS = 27.3;
+// const double MOON_ORBIT_TIME_DAYS = 27.3 * EARTH_ORBIT_TIME_DAYS;
+const double MOON_ORBIT_TIME_DAYS = (365.3 / 27.3) * EARTH_ORBIT_TIME_DAYS;
 const double MOON_ORBIT_TIME_HOURS = MOON_ORBIT_TIME_DAYS * 24.;
 const double MOON_ORBIT_TIME_SECONDS = MOON_ORBIT_TIME_HOURS * 60. * 60.;
 
-const double MOON_SPIN_TIME_DAYS = MOON_ORBIT_TIME_DAYS;
+const double MOON_SPIN_TIME_DAYS = MOON_ORBIT_TIME_DAYS * 0.0000;
 const double MOON_SPIN_TIME_HOURS = MOON_SPIN_TIME_DAYS * 24.;
 const double MOON_SPIN_TIME_SECONDS = MOON_SPIN_TIME_HOURS * 60. * 60.;
 
@@ -228,12 +258,14 @@ void	Visibility( int );
 
 glm::mat4 MakeEarthMatrix( )
 {
+  // float earthSpinAngle = Time * EARTH_SPIN_TIME_SECONDS * ONE_FULL_TURN;
+  float earthSpinAngle = Time * EARTH_SPIN_TIME_SECONDS * ONE_FULL_TURN;
+  float earthOrbitAngle = Time * EARTH_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
+  printf("EARTH_RADIUS_KM: %.*f\n", 12, EARTH_RADIUS_KM);
+  printf("EARTH_ORBIT_KM: %.*f\n", 12, EARTH_ORBITAL_RADIUS_KM);
   printf("EARTH_SPIN_TIME_SECONDS: %.*f\n", 12, EARTH_SPIN_TIME_SECONDS);
   printf("EARTH_ORBIT_TIME_SECONDS: %.*f\n", 12, EARTH_ORBIT_TIME_SECONDS);
-  printf("EARTH_ORBITAL_PERIOD: %.*f\n", 12, EARTH_ORBITAL_PERIOD);
-  float earthSpinAngle = Time * EARTH_SPIN_TIME_SECONDS * ONE_FULL_TURN * 36500;
-  // float earthSpinAngle = Time * EARTH_SPIN_TIME_SECONDS * ONE_FULL_TURN;
-  float earthOrbitAngle = Time * EARTH_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
+  printf("EARTH_ORBIT_TIME_DAYS: %.*f\n", 12, EARTH_ORBIT_TIME_DAYS);
   printf("earthSpinAngle: %.*f\n", 12, earthSpinAngle);
   printf("earthOrbitAngle: %.*f\n", 12, earthOrbitAngle);
   glm::mat4 identity = glm::mat4( 1. );
@@ -250,21 +282,33 @@ glm::mat4 MakeEarthMatrix( )
 glm::mat4 MakeMoonMatrix( )
 {
   float moonSpinAngle = Time * MOON_SPIN_TIME_SECONDS * ONE_FULL_TURN;
-  float moonOrbitAngle = Time * MOON_ORBIT_TIME_SECONDS * ONE_FULL_TURN * 200;
-  // float moonOrbitAngle = Time * MOON_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
+  float moonOrbitAngle = Time * MOON_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
   float earthOrbitAngle = Time * EARTH_ORBIT_TIME_SECONDS * ONE_FULL_TURN;
+  printf("MOON_ORBIT_KM: %.*f\n", 12, MOON_ORBITAL_RADIUS_KM);
+  printf("MOON_RADIUS_KM: %.*f\n", 12, MOON_RADIUS_KM);
+  printf("MOON_ORBIT_TIME_DAYS: %.*f\n", 12, MOON_ORBIT_TIME_DAYS);
+  printf("MOON_SPIN_TIME_DAYS: %.*f\n", 12, MOON_SPIN_TIME_DAYS);
   glm::mat4 identity = glm::mat4( 1. );
   glm::vec3 yaxis = glm::vec3( 0., 1., 0. );
 
   /* 5. */ glm::mat4 erorbity = glm::rotate( identity, earthOrbitAngle, yaxis );
   /* 4. */ glm::mat4 etransx = glm::translate( identity, glm::vec3( EARTH_ORBITAL_RADIUS_KM, 0., 0. ) );
   /* 3. */ glm::mat4 mrorbity = glm::rotate( identity, moonOrbitAngle, yaxis );
-  /* 2. */ glm::mat4 mtransx = glm::translate( identity, glm::vec3( MOON_ORBITAL_RADIUS_KM, 0., 0.) );
+  /* 2. */ glm::mat4 mtransx = glm::translate( identity, glm::vec3( MOON_ORBITAL_RADIUS_KM, 0., 0.
+  ) );
   /* 1. */ glm::mat4 mrspiny = glm::rotate( identity, moonSpinAngle, yaxis );
 
   return erorbity * etransx * mrorbity * mtransx * mrspiny; // 5 * 4 * 3 * 2 * 1
 }
 
+glm::mat4 MakeSunMatrix( )
+{
+  glm::mat4 identity = glm::mat4( 1. );
+  glm::vec3 yaxis = glm::vec3( 0., 1., 0. );
+  /* 2. */ glm::mat4 etransx = glm::translate( identity, glm::vec3( 0, 0., 0. ) );
+
+  return etransx;
+}
 
 
 
@@ -395,7 +439,7 @@ Display( )
       // gluLookAt( 0., 0., 3., 0., 0., 0., 0., 1., 0. );
       // glRotatef( (GLfloat)Yrot, 0., 1., 0. );
       // glRotatef( (GLfloat)Xrot, 1., 0., 0. );
-      gluLookAt( 0., 10., 0., 0., 0., 0., 0., 0., -1. );
+      gluLookAt( 0., 12., 0., 0., 0., 0., 0., 0., -1. );
       glRotatef( (GLfloat)Yrot, 0., 1., 0. );
       glRotatef( (GLfloat)Xrot, 1., 0., 0. );
       if( Scale < MINSCALE )
@@ -425,34 +469,55 @@ Display( )
 
 
     case MOONVIEW:   // 3rd way to set gluLookAt( )
+    {
+      // Latitude and Longitude
+      float y = MOON_RADIUS_KM * sinf( 0.);
+      float xz = cosf( 0. );
+      float x = MOON_RADIUS_KM * xz * cosf( 180. );
+      float z = MOON_RADIUS_KM * xz * sinf( 180. );
+
       m = MakeMoonMatrix( );
 
-      // float eye[4] = { MOON_RADIUS_KM, 0., 0., 1. };
-      eye.x = MOON_RADIUS_KM;
+      // float eye[4] = { x, y, z, 1. };
+      eye.x = x; eye.y = y; eye.z = z;
       eye = m * eye;
 
-      // float look[4] = MOON_RADIUS_KM, 0., -1000., 1. };
-      look.x = MOON_RADIUS_KM;
-      look.z = -1000.;
+      // float look[4] = { x+z, y, z-x, 1. };
+      look.x = x+z; look.y = y; look.z = z-x;
       look = m * look;
 
-      //float up[4] = {100 0., 0., 0., 0. };
-      up.x = 1000.;
+      // float up[4] = { x, y, z, 0. };
+      up.x = x; up.y = y; up.z = z;
       up = m * up;
+
+
+      // // float eye[4] = { MOON_RADIUS_KM, 0., 0., 1. };
+      // eye.x = MOON_RADIUS_KM;
+      // eye = m * eye;
+      //
+      // // float look[4] = MOON_RADIUS_KM, 0., -1000., 1. };
+      // look.x = MOON_RADIUS_KM;
+      // look.z = -1000.;
+      // look = m * look;
+      //
+      // //float up[4] = {100 0., 0., 0., 0. };
+      // up.x = 1000.;
+      // up = m * up;
 
       gluLookAt( eye.x, eye.y, eye.z, look.x, look.y, look.z,
                  up.x, up.y, up.z );
+    }
       break;
 
     case SUNVIEW:    // 4th way to set gluLookAt( )
       {
         // Latitude and Longitude
-        float y = EARTH_RADIUS_KM * sinf( 44.57);
-        float xz = cosf( 44.57 );
-        float x = EARTH_RADIUS_KM * xz * cosf( 123.27 );
-        float z = EARTH_RADIUS_KM * xz * sinf( 123.27 );
+        float y = SUN_RADIUS_KM * sinf( 0.);
+        float xz = cosf( 0. );
+        float x = SUN_RADIUS_KM * xz * cosf( 123.27 );
+        float z = SUN_RADIUS_KM * xz * sinf( 123.27 );
 
-        m = MakeEarthMatrix( );
+        m = MakeSunMatrix( );
 
         // float eye[4] = { x, y, z, 1. };
         eye.x = x; eye.y = y; eye.z = z;
@@ -513,71 +578,17 @@ Display( )
 	// since we are using glScalef( ), be sure NORMALS get unitized:
 	glEnable( GL_NORMALIZE );
 
-  // LIGHTS
-
-  // LIGHT 0
-  glPushMatrix();
-    glRotatef(Angle, 0., 1., 0.);
-    glRotatef(Angle, 0.05, 1., 0.08);
-    glTranslatef( 0.3, 0.1, 0.);
-    SetPointLight( GL_LIGHT0, 0., 0., 0., LC0.r, LC0.g, LC0.b );
-    // Create Light Geometry
-    glColor3f( LC0.r, LC0.g, LC0.b );
-    glutSolidSphere( 0.02, 50, 50);
-  glPopMatrix();
-
-  // LIGHT 1
-  glPushMatrix();
-    SetPointLight( GL_LIGHT1, 0., 0., 0., LC1.r, LC1.g, LC1.b );
-    // Create Light Geometry
-    glColor3f( LC1.r, LC1.g, LC1.b );
-  glPopMatrix();
-
-
-  // SHADING TOGGLE
-  if( Smooth_Shading ) {
-    glShadeModel( GL_SMOOTH );
-  } else {
-    glShadeModel( GL_FLAT );
-  }
-
-
-  // ENABLE LIGHTING
-  glEnable( GL_LIGHTING );
-
-  if( Light0On )
-    glEnable( GL_LIGHT0 );
-  else
-    glDisable( GL_LIGHT0 );
-  if( Light1On )
-    glEnable( GL_LIGHT1 );
-  else
-    glDisable( GL_LIGHT1 );
-
 
 	// DRAW
   glm::mat4 earth = MakeEarthMatrix( );
   glm::mat4 moon = MakeMoonMatrix( );
 
-
-
-  // SUN
-  // glPushMatrix();
-  //   SetMaterial( 1., 1., 1., 2.0 );
-  //   glEnable( GL_TEXTURE_2D );
-  //   glBindTexture( GL_TEXTURE_2D, Tex0 );     // Set current texture
-  //   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
-  //   OsuSphere(0.10, 100, 100);
-  //   glDisable( GL_TEXTURE_2D );
-  // glPopMatrix();
-
-  // Earth using matrix
+  // Sun
   glPushMatrix( );
     SetMaterial( 1., 1., 1., 2.0 );
     glEnable( GL_TEXTURE_2D );
     glBindTexture(GL_TEXTURE_2D, Tex0 );
-    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-    // glMultMatrixf( glm::value_ptr(earth) );
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
     glCallList( SunList );
     glDisable( GL_TEXTURE_2D );
   glPopMatrix( );
@@ -587,7 +598,7 @@ Display( )
     SetMaterial( 1., 1., 1., 2.0 );
     glEnable( GL_TEXTURE_2D );
     glBindTexture(GL_TEXTURE_2D, Tex1 );
-    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
     glMultMatrixf( glm::value_ptr(earth) );
     glCallList( EarthList );
     glDisable( GL_TEXTURE_2D );
@@ -598,16 +609,16 @@ Display( )
     SetMaterial( 1., 1., 1., 2.0 );
     glEnable( GL_TEXTURE_2D );
     glBindTexture(GL_TEXTURE_2D, Tex2 );
-    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
     glMultMatrixf( glm::value_ptr(moon) );
     glCallList( MoonList );
     glDisable( GL_TEXTURE_2D );
   glPopMatrix( );
 
-  printf("MOON ORBITAL PERIOD: %.*f\n", 12, MOON_ORBITAL_PERIOD);
-  printf("FRACTION OF AU: %.*f\n", 12, (MOON_ORBITAL_RADIUS_KM / EARTH_ORBITAL_RADIUS_KM));
-  printf("EARTH ORBITAL PERIOD: %.*f\n", 12, EARTH_ORBITAL_PERIOD);
-  printf("EARTH ORBIT TIME DAYS: %.*f\n", 12, EARTH_ORBIT_TIME_DAYS);
+  // printf("MOON ORBITAL PERIOD: %.*f\n", 12, MOON_ORBITAL_PERIOD);
+  // printf("FRACTION OF AU: %.*f\n", 12, (MOON_ORBITAL_RADIUS_KM / EARTH_ORBITAL_RADIUS_KM));
+  // printf("EARTH ORBITAL PERIOD: %.*f\n", 12, EARTH_ORBITAL_PERIOD);
+  // printf("EARTH ORBIT TIME DAYS: %.*f\n", 12, EARTH_ORBIT_TIME_DAYS);
 
   // printf("EARTH ORBITAL PERIOD: %f\n", EARTH_ORBITAL_PERIOD);
 
@@ -642,20 +653,6 @@ Display( )
   //   glDisable( GL_TEXTURE_2D );
   //
   // glPopMatrix();
-
-  // MOON
-  // glPushMatrix();
-  //   glTranslatef( -0.45, 0.02, 0.2 );
-  //
-  //   SetMaterial( 1., 1., 1., 2.0 );
-  //   glEnable( GL_TEXTURE_2D );
-  //   glBindTexture( GL_TEXTURE_2D, Tex2 );     // Set current texture
-  //   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );  // How to use the texture
-  //   OsuSphere(0.05, 100, 100);
-  //   glDisable( GL_TEXTURE_2D );
-  // glPopMatrix();
-
-  glDisable( GL_LIGHTING );
 
 
 	// SWAP the double-buffered FRAMEBUFFERS:
@@ -1140,6 +1137,16 @@ Keyboard( unsigned char c, int x, int y )
 
     case '1':
       Light1On = !Light1On;
+      break;
+
+    case 'u':
+      printf("Increase Speed\n");
+      ONE_FULL_TURN *= 2.;
+    break;
+
+    case 'U':
+      printf("Deecrease Speed\n");
+      ONE_FULL_TURN *= 0.5;
       break;
 
     // Toggle through views
