@@ -57,52 +57,21 @@ const GLfloat BACKCOLOR[ ] = { Colors[BLACK][0], Colors[BLACK][1], Colors[BLACK]
 // Animation Time
 const int MAXIMUM_TIME_SECONDS = 10 * 60;     // 10 minutes
 const int MAXIMUM_TIME_MILLISECONDS = 1000 * MAXIMUM_TIME_SECONDS;
-// const double ONE_FULL_TURN = 100.;
-// double ONE_FULL_TURN = 100.;
 
 // Scaling Factors
-// const float UNIVERSE_ORBIT_RADIUS_FACTOR = 0.00000004;
-// const float UNIVERSE_SPEED_FACTOR = 0.000000004;
-// const float UNIVERSE_SIZE_FACTOR = 0.00004;
-
-// const double UNIVERSE_ORBIT_RADIUS_FACTOR = 0.00000005;   // For scaling orbit radii
 const double MOON_ORBIT_RADIUS_FACTOR = 50.;  // Offset to account for size
 const double UNIVERSE_SIZE_FACTOR = 1.;   // For setting size of planetary bodies (Not the sun)
 const double SUN_SCALE_FACTOR = 0.000002;  // Sun only
 const double AU = 149600000.;  // Astronomical Unit - Distance from Earth to sun  (When calculating
                                // orbit, distance is in AU and period is in years.
                                // Simple equation only for those orbiting sun.
-// const double G = 6.674 * pow(10., -11);  // Gravity constant
-
-// // Earth Attributes
-// // const double EARTH_MASS = 5.97 * pow(10., 24);  // 10^24 kg
-// // const double EARTH_RADIUS_MILES = 3964.19 * UNIVERSE_SIZE_FACTOR;
-// const double EARTH_RADIUS_KM = 6371. * UNIVERSE_SIZE_FACTOR;
-//
-// // const double EARTH_ORBITAL_RADIUS_MILES = 92900000. * UNIVERSE_ORBIT_RADIUS_FACTOR;
-// const double EARTH_ORBITAL_RADIUS_KM = 149600000. * UNIVERSE_ORBIT_RADIUS_FACTOR;
-//
-// // Adjust orbital period based on orbital radius per Kepler's 3rd law
-// const double EARTH_ORBITAL_PERIOD = pow((EARTH_ORBITAL_RADIUS_KM / AU), (3./2.));
-//
-// const double EARTH_ORBIT_TIME_DAYS = 365.3 * EARTH_ORBITAL_PERIOD;
-// // const double EARTH_ORBIT_TIME_DAYS = 365.3;
-// const double EARTH_ORBIT_TIME_HOURS = EARTH_ORBIT_TIME_DAYS * 24.;
-// const double EARTH_ORBIT_TIME_SECONDS = EARTH_ORBIT_TIME_HOURS * 60. * 60.;
-//
-// const double EARTH_SPIN_TIME_DAYS = 0.9971 * EARTH_ORBITAL_PERIOD;
-// // const double EARTH_SPIN_TIME_DAYS = 0.9971;
-// const double EARTH_SPIN_TIME_HOURS = EARTH_SPIN_TIME_DAYS * 24.;
-// const double EARTH_SPIN_TIME_SECONDS = EARTH_SPIN_TIME_HOURS * 60. * 60.;
 
 // const double EARTH_RADIUS_KM = 6371. * UNIVERSE_SIZE_FACTOR;
 const double EARTH_RADIUS_KM = 0.5 * UNIVERSE_SIZE_FACTOR;
 const double EARTH_ORBITAL_RADIUS_KM = 10.;
 
 const double MULTIPLIER = pow((EARTH_ORBITAL_RADIUS_KM / AU), 1.5);
-// double ONE_FULL_TURN = pow((EARTH_ORBITAL_RADIUS_KM / AU), 1.5);
 double ONE_FULL_TURN = 1.;
-// const double MULTIPLIER = EARTH_ORBITAL_RADIUS_KM / AU;
 
 // const double EARTH_ORBIT_TIME_DAYS = 365.3;
 const double EARTH_ORBIT_TIME_DAYS = 365.3 * MULTIPLIER * 100;
@@ -112,29 +81,11 @@ const double EARTH_ORBIT_TIME_SECONDS = EARTH_ORBIT_TIME_HOURS * 60. * 60.;
 
 double EARTH_SPIN_TURN = 27.32 * EARTH_ORBIT_TIME_DAYS;
 const double EARTH_SPIN_TIME_DAYS = EARTH_ORBIT_TIME_DAYS * (365.3 / 0.9971);
-// const double EARTH_SPIN_TIME_DAYS = 0.9971;
 const double EARTH_SPIN_TIME_HOURS = EARTH_SPIN_TIME_DAYS * 24.;
 const double EARTH_SPIN_TIME_SECONDS = EARTH_SPIN_TIME_HOURS * 60. * 60.;
 
 
 // Moon Attributes
-// // const double MOON_RADIUS_MILES = 1079.6 * UNIVERSE_SIZE_FACTOR;
-// const double MOON_RADIUS_KM = 1737.4 * UNIVERSE_SIZE_FACTOR;
-//
-// const double MOON_ORBITAL_RADIUS_MILES = 238900. * UNIVERSE_ORBIT_RADIUS_FACTOR * MOON_ORBIT_RADIUS_FACTOR;
-// const double MOON_ORBITAL_RADIUS_KM = 385000. * UNIVERSE_ORBIT_RADIUS_FACTOR * MOON_ORBIT_RADIUS_FACTOR;
-//
-// const double MOON_ORBITAL_PERIOD =  27.3 * EARTH_ORBITAL_PERIOD;
-//
-// const double MOON_ORBIT_TIME_DAYS = 27.3 * EARTH_ORBITAL_PERIOD;
-// const double MOON_ORBIT_TIME_HOURS = MOON_ORBIT_TIME_DAYS * 24.;
-// const double MOON_ORBIT_TIME_SECONDS = MOON_ORBIT_TIME_HOURS * 60. * 60.;
-//
-// const double MOON_SPIN_TIME_DAYS = MOON_ORBIT_TIME_DAYS;
-// const double MOON_SPIN_TIME_HOURS = MOON_SPIN_TIME_DAYS * 24.;
-// const double MOON_SPIN_TIME_SECONDS = MOON_SPIN_TIME_HOURS * 60. * 60.;
-
-// const double MOON_RADIUS_KM = 1737.4 * UNIVERSE_SIZE_FACTOR;
 const double MOON_RADIUS_KM = (1737.4 / 6371.) * EARTH_RADIUS_KM;
 const double MOON_ORBITAL_RADIUS_KM = (385000./149600000) * EARTH_ORBITAL_RADIUS_KM * MOON_ORBIT_RADIUS_FACTOR;
 
@@ -148,7 +99,6 @@ const double MOON_SPIN_TIME_HOURS = MOON_SPIN_TIME_DAYS * 24.;
 const double MOON_SPIN_TIME_SECONDS = MOON_SPIN_TIME_HOURS * 60. * 60.;
 
 // Sun Attributes
-// const double SUN_RADIUS_MILES = 432687. * SUN_SCALE_FACTOR;
 const double SUN_RADIUS_KM = 696342. * SUN_SCALE_FACTOR;
 
 
