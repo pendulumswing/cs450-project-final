@@ -101,6 +101,8 @@ const double MOON_SPIN_TIME_SECONDS = MOON_SPIN_TIME_HOURS * 60. * 60.;
 // Sun Attributes
 const double SUN_RADIUS_KM = 696342. * SUN_SCALE_FACTOR;
 
+const double SKY_RADIUS_KM = 100.;
+
 
 //////////////////////////////////////////////////
 // COLORS - Imported from colors.h
@@ -131,6 +133,7 @@ GLuint Banana;
 GLuint SunList;
 GLuint EarthList;
 GLuint MoonList;
+GLuint SkyList;
 
 // TEXTURE GLOBAL VARIABLES
 GLuint Tex0;                // To store texture
@@ -565,6 +568,16 @@ Display( )
     glDisable( GL_TEXTURE_2D );
   glPopMatrix( );
 
+  // Sky
+  glPushMatrix( );
+    SetMaterial( 1., 1., 1., 2.0 );
+    glEnable( GL_TEXTURE_2D );
+    glBindTexture(GL_TEXTURE_2D, Tex3 );
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
+    glCallList( SkyList );
+    glDisable( GL_TEXTURE_2D );
+  glPopMatrix( );
+
   // printf("MOON ORBITAL PERIOD: %.*f\n", 12, MOON_ORBITAL_PERIOD);
   // printf("FRACTION OF AU: %.*f\n", 12, (MOON_ORBITAL_RADIUS_KM / EARTH_ORBITAL_RADIUS_KM));
   // printf("EARTH ORBITAL PERIOD: %.*f\n", 12, EARTH_ORBITAL_PERIOD);
@@ -915,7 +928,7 @@ InitGraphics( )
   glGenTextures( 1, &Tex0 );                    // Create unique Texture "handle"
   glGenTextures( 1, &Tex1 );                    // Create unique Texture "handle"
   glGenTextures( 1, &Tex2 );                    // Create unique Texture "handle"
-  // glGenTextures( 1, &Tex3 );                    // Create unique Texture "handle"
+  glGenTextures( 1, &Tex3 );                    // Create unique Texture "handle"
   // glGenTextures( 1, &Tex4 );                    // Create unique Texture "handle"
   // glGenTextures( 1, &Tex5 );                    // Create unique Texture "handle"
   // glGenTextures( 1, &Tex6 );                    // Create unique Texture "handle"
@@ -927,7 +940,7 @@ InitGraphics( )
   // texture
   Texture1 = BmpToTexture("data/textures/earth-topo-1k.bmp", &tex1Width, &tex1Height);
   Texture2 = BmpToTexture("data/textures/moon-nasa-color-1k.bmp", &tex2Width, &tex2Height);
-  // Texture3 = BmpToTexture("data/textures/Bake_Banana_Tex_Base_ALB-OP.bmp", &tex3Width, &tex3Height);
+  Texture3 = BmpToTexture("data/textures/stars-milkyway-2k.bmp", &tex3Width, &tex3Height);
   // Texture4 = BmpToTexture("data/textures/Bake_Banana_Tex_Base_ALB-OP.bmp", &tex4Width,
   //                         &tex4Height);
   // Texture5 = BmpToTexture("data/textures/Bake_Banana_Tex_Base_ALB-OP.bmp", &tex5Width,
@@ -964,13 +977,13 @@ InitGraphics( )
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexImage2D( GL_TEXTURE_2D, 0, 3, tex2Width, tex2Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Texture2 );
   //
-  // // Tex3
-  // glBindTexture( GL_TEXTURE_2D, Tex3 );            // Make Tex3 handle current
-  // glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-  // glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-  // glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-  // glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  // glTexImage2D( GL_TEXTURE_2D, 0, 3, tex3Width, tex3Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Texture3 );
+  // Tex3
+  glBindTexture( GL_TEXTURE_2D, Tex3 );            // Make Tex3 handle current
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexImage2D( GL_TEXTURE_2D, 0, 3, tex3Width, tex3Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Texture3 );
   //
   // // Tex4
   // glBindTexture( GL_TEXTURE_2D, Tex4 );            // Make Tex4 handle current
@@ -1040,12 +1053,11 @@ InitLists( )
     OsuSphere(SUN_RADIUS_KM, 100, 100);
   glEndList();
 
-  // BANANA
-  Banana = glGenLists( 1 );
-  glNewList( Banana, GL_COMPILE );
-  LoadObjFile( "data/obj/Bake_Banana.obj" );
+  // StarList
+  SkyList = glGenLists( 1 );
+  glNewList( SkyList, GL_COMPILE );
+    OsuSphere(SKY_RADIUS_KM, 100, 100);
   glEndList();
-
 
   // create the axes:
 	AxesList = glGenLists( 1 );
