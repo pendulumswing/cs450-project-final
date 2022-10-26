@@ -1,6 +1,9 @@
-# CS450 - Final Project
+# Sun, Earth, Moon
+A garphics simulation showing the relationship between the Sun, Earth, and Moon using an exaggeration of real-world data while maintaining key proportions. There are four views accessible with hotkeys and/or menu options, as outlined below. All bodies are textured, lit and follow Kepler’s Third Law of Planetary Motion. A user may also increase or decrease animation speed by pressing the up or down arrows.
 
-## Sun-Earth-Moon
+<br>
+
+![](data/img/esm-1.png)
 
 #### Make
 Compile project using Makefile. Default 'make' will build the project and object files. Add additional .cpp files at the top of the Makefile by appending with `SRC += [filename].cpp`.
@@ -16,26 +19,25 @@ make zip      # Zips project and all .cpp and .hpp files
 
 #### Run
 ```
-./project-7
+./sun-earth-moon
 ```
 
-## Description
-![](data/img/sun-earth-moon.jpg)
-<br>
-A project showing the relationship between the Sun, Earth, and Moon using an exaggeration of 
-real-world data while maintaining key proportions. There will be at least three views accessible with hotkeys and/or menu options, as outlined below. All bodies will be textured, lit and follow Kepler’s Third Law of Planetary Motion. Optionally, a user may increase or decrease animation speed by pressing the up or down arrows.
+### Hotkeys
+| Key  | Action               |
+| ---- | -------------------- |
+| v, V | Toggle through views |
+| u    | Increase Speed       |
+| U    | Decrease speed       |
+| f, F | Freeze animation     |
+| r, R | Reset scene          |
+| s, S | Smooth Shading       |
+| 0    | Toggle Light 0       |
+| 1    | Toggle Light 1       |
+| o, O | Orthographic camera  |
+| p, P | Perspective Camera   |
+| q, Q | Quit                 |
 
-
-## Criteria
-
-### Key areas to exaggerate:
-
-1. Planet/Sun diameter (proportionate, with the possible exception of the sun)
-2. Orbital radius (proportionate, with the possible exception of the earth to make it “tighter”)
-3. Orbital speed (proportionate to orbital radius - Kepler’s Third Law)
-4. Circular orbits
-
-### Views:
+### Views
 
 1. Overall view - where the viewer can see everything.
 2. Earth View - Where the eye is somewhere on the Earth, looking somewhere interesting.
@@ -44,10 +46,13 @@ real-world data while maintaining key proportions. There will be at least three 
 
 ### Physics
 
-1. Kepler's Third law of planetary motion:
+   Kepler's Third law of planetary motion:
    Orbital Period is proportional to OrbitalRadius<sup>3/2</sup> = pow( OrbitalRadius, 3./2. )
 
 ## Data
+![](data/img/sun-earth-moon.jpg)
+<br>
+
 **Sun** [(Wiki)](https://en.wikipedia.org/wiki/Sun):  
 &emsp; **radius:** 696,342 km (432,687 miles)  
 &emsp; **sidereal rotation period:** 25.05 days  
@@ -95,19 +100,10 @@ Nasa 3D Images: [https://nasa3d.arc.nasa.gov/images](https://nasa3d.arc.nasa.gov
 CGI Moon Kit: [https://svs.gsfc.nasa.gov/4720](https://svs.gsfc.nasa.gov/4720)   
 Solar System Textures: [https://www.solarsystemscope.com/textures/](https://www.solarsystemscope.com/textures/)
 
-## Turn-in:
 
-Use the [Teach system](http://engr.oregonstate.edu/teach) to turn in your:
-
-1. Your .cpp file
-2. A one-page PDF with a title, your name, your email address, a nice screen shot from your program, and the link to the Kaltura video demonstrating that your project does what the requirements ask for. Narrate your video so that you can tell us what it is doing.
-
-
-## Grading:
-
-
-| Item                                  | Points |
-| --------------------------------------| ------ |
-| Final Project Proposal                |   10   |
-| Final Project                         |   40   |
-| **Total**                             | **100**|
+## Example Screenshots
+![](data/img/esm-1.png)
+![](data/img/esm-2.png)
+![](data/img/esm-3.png)
+![](data/img/esm-4.png)
+![](data/img/esm-5.png)
