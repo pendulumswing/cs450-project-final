@@ -1,5 +1,5 @@
 # Variables
-PROJ = project-final
+PROJ = sun-earth-moon
 COMP = g++
 VAL = --leak-check=full --show-leak-kinds=all --track-origins=yes --tool=memcheck
 #CFLAGS = -g -Wall -std=c++11 -pedantic
