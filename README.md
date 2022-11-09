@@ -1,5 +1,5 @@
 # Sun, Earth, Moon
-A garphics simulation showing the relationship between the Sun, Earth, and Moon using an exaggeration of real-world data while maintaining key proportions. There are four views accessible with hotkeys and/or menu options, as outlined below. All bodies are textured, lit and follow Kepler’s Third Law of Planetary Motion. A user may also increase or decrease animation speed by pressing the up or down arrows.
+A graphics simulation showing the relationship between the Sun, Earth, and Moon using an exaggeration of real-world data while maintaining key proportions. There are four views accessible with hotkeys and/or menu options, as outlined below. All bodies are textured, lit and follow Kepler’s Third Law of Planetary Motion. A user may also increase or decrease animation speed by pressing the up or down arrows.
 
 <br>
 
